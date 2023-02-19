@@ -8,7 +8,6 @@ import com.example.bank.Repositories.CardRepository;
 import com.example.bank.Repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,12 +18,18 @@ import java.util.List;
 public class UserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private BankRepository bankRepository;
-    @Autowired
-    private CardRepository cardRepository;
+
+    private final UserRepository userRepository;
+
+    private final BankRepository bankRepository;
+
+    private final CardRepository cardRepository;
+
+    public UserService(UserRepository userRepository, BankRepository bankRepository, CardRepository cardRepository) {
+        this.userRepository = userRepository;
+        this.bankRepository = bankRepository;
+        this.cardRepository = cardRepository;
+    }
 
     public List<User> getAllUser() {
         return userRepository.findAll();
@@ -113,5 +118,25 @@ public class UserService {
             return null;
         }
         return userByIdentifierCode;
+    }
+
+    public ResponseEntity<String> moneyTransfer(int fromCardNumber, int toCardNumber, int summa){
+        Card cardFrom = cardRepository.findCardByCardNumber(fromCardNumber);
+        Card cardTo = cardRepository.findCardByCardNumber(toCardNumber);
+
+        long balanceFrom = cardFrom.getBalance();
+        long balanceTo = cardTo.getBalance();
+        if (cardFrom.getBalance() >= summa) {
+            long resultFrom = balanceFrom - summa;
+            cardFrom.setBalance(resultFrom);
+
+            long resultTo = balanceTo + summa;
+            cardTo.setBalance(resultTo);
+
+            cardRepository.save(cardFrom);
+            cardRepository.save(cardTo);
+            return new ResponseEntity<>("Money transfer successful", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Money transfer not successful", HttpStatus.OK);
     }
 }

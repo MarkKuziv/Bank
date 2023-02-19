@@ -65,14 +65,4 @@ public class Card {
         this.balance = balance;
     }
 
-    @Override
-    public String toString() {
-        return "Card{" +
-                "id=" + id +
-                ", cardNumber=" + cardNumber +
-                ", cvvCode=" + cvvCode +
-                ", duration='" + duration + '\'' +
-                ", balance=" + balance +
-                '}';
-    }
 }

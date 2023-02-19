@@ -121,19 +121,4 @@ public class User {
     public void setCard(Card card) {
         this.card = card;
     }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", dateBirth='" + dateBirth + '\'' +
-                ", city='" + city + '\'' +
-                ", number=" + number +
-                ", identifierCode=" + identifierCode +
-                ", bank=" + bank +
-                ", card=" + card +
-                '}';
-    }
 }

@@ -1,7 +1,7 @@
 package com.example.bank.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import org.apache.catalina.LifecycleState;
 
 import java.util.List;
 
@@ -15,6 +15,7 @@ public class Bank {
     private String bankName;
 
     @OneToMany(mappedBy = "bank")
+    @JsonIgnore
     private List<User> user;
 
     public Bank(List<User> user, String bankName) {
@@ -50,12 +51,4 @@ public class Bank {
         this.user = user;
     }
 
-    @Override
-    public String toString() {
-        return "Bank{" +
-                "id=" + id +
-                ", bankName='" + bankName + '\'' +
-                ", user=" + user +
-                '}';
-    }
 }
